@@ -54,4 +54,3 @@ $(IMAGES):
 	- $(info Building $@)
 	- @docker build -t fjolsvin/$@:latest $@
 	- @docker push fjolsvin/$@:latest
-	- @docker system prune -f
