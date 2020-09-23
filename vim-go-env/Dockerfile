@@ -7,6 +7,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" > /etc/apk/repositorie
   echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories && \
   echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories && \
   apk upgrade -U -a
+RUN apk add ncurses 
 RUN apk add cmake 
 RUN apk add py3-pip
 RUN apk add bash 
@@ -70,7 +71,28 @@ RUN go get -v github.com/cuonglm/gocmt
 RUN go get -v github.com/palantir/go-compiles
 RUN go get -v github.com/mohae/nocomment/cmd/nocomment
 RUN go get -v github.com/eandre/discover/...
-RUN (echo | vim +PlugInstall +qall > /dev/null && echo 0) || true
+RUN (echo | vim +PlugInstall +qall > /dev/null && echo 0) || true 
+RUN (echo | vim -c "CocInstall -sync coc-tsserver \
+            coc-git \
+            coc-bookmark \
+            coc-snippets \
+            coc-highlight \
+            coc-json \
+            coc-lists \
+            coc-markdownlint \
+            coc-tabnine \
+            coc-tasks \
+            coc-todolist \
+            coc-template \
+            coc-yank \
+            coc-pairs \
+            coc-svg \
+            coc-yaml \
+            coc-spell-checker \
+            coc-go \
+            coc-sh \
+            coc-prettier|q" > /dev/null && \
+            echo 0 ) || true
 # => cleanups
 RUN rm -rf $(go env GOPATH)/src && \
     sudo rm -rf $(go env GOPATH)/pkg && \
