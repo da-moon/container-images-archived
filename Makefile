@@ -54,3 +54,7 @@ $(IMAGES):
 	- $(info Building $@)
 	- @docker build -t fjolsvin/$@:latest $@
 	- @docker push fjolsvin/$@:latest
+.PHONY: clean
+.SILENT: clean
+clean:
+	- @docker system prune -f
