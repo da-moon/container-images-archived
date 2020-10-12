@@ -42,18 +42,22 @@ SELF_DIR := $(dir $(THIS_FILE))
 IMAGES := $(notdir $(patsubst %/,%,$(dir $(wildcard ./*/.))))
 .PHONY: $(IMAGES)
 .SILENT: $(IMAGES)
+GITPOD := $(notdir $(patsubst %/,%,$(dir $(wildcard ./*gitpod*/.))))
+.PHONY: $(GITPOD)
+.SILENT: $(GITPOD)
 .PHONY: images
 .SILENT: images
-ALL :
-	- @$(MAKE) --no-print-directory -f $(THIS_FILE) $(IMAGES)
 images:
-	- $(info $(IMAGES))
-.PHONY: build
-.SILENT: build
+	- $(info All images >> $(IMAGES))
+	- $(info gitpod >> $(GITPOD))
 $(IMAGES):
 	- $(info Building $@)
 	- @docker build -t fjolsvin/$@:latest $@
 	- @docker push fjolsvin/$@:latest
+.PHONY:gitpod
+.SILENT:gitpod
+gitpod:
+	- @$(MAKE) --no-print-directory -f $(THIS_FILE) $(GITPOD)
 .PHONY: clean
 .SILENT: clean
 clean:

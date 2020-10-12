@@ -1,9 +1,48 @@
-FROM fjolsvin/gitpod-lua 
-ENV DEBIAN_FRONTEND=noninteractive
+FROM gitpod/workspace-full
+USER gitpod
 ENV PATH=$PATH:/usr/local/sbin:/usr/sbin:/sbin
+SHELL ["/bin/bash", "-c"]
+ENV DEBIAN_FRONTEND=noninteractive
+ENV LUA_VERSION=5.3.5
+ENV LUA_ROCKS_VERSION=3.3.1
+ENV LUA_JIT_VERSION=2.0.5
+# uninstalling cargo since it takes too much space
+RUN yes | /home/gitpod/.cargo/bin/rustup self uninstall && \
+    sudo rm /home/gitpod/.bashrc.d/80-rust
+# building and installing lua
+RUN yes | sudo apt update && \
+    sudo apt upgrade -y && \
+    sudo apt install build-essential libreadline-dev curl -y
+WORKDIR /tmp
+# installing lua
+RUN curl -R -O "http://www.lua.org/ftp/lua-${LUA_VERSION}.tar.gz" && \
+  tar -C /tmp -zxf "/tmp/lua-${LUA_VERSION}.tar.gz" && \
+  cd "/tmp/lua-${LUA_VERSION}" && \
+  make linux test && \
+  sudo make install && \
+  lua -v
+WORKDIR /tmp
+# installing luarocks
+RUN wget "https://luarocks.org/releases/luarocks-${LUA_ROCKS_VERSION}.tar.gz" && \
+  tar -C /tmp -zxf "/tmp/luarocks-${LUA_ROCKS_VERSION}.tar.gz" && \
+  cd "/tmp/luarocks-${LUA_ROCKS_VERSION}" && \
+  ./configure --with-lua-include=/usr/local/include && \
+  make && \
+  sudo make install && \
+  luarocks --version
+WORKDIR /tmp
+# installing luajit 
+RUN wget "https://luajit.org/download/LuaJIT-${LUA_JIT_VERSION}.tar.gz" && \
+  tar -C /tmp -zxf "/tmp/LuaJIT-${LUA_JIT_VERSION}.tar.gz" && \
+  cd "/tmp/LuaJIT-${LUA_JIT_VERSION}" && \
+  make && \
+  sudo make install && \
+  luajit -v
+# Cleaning up
 USER root
 WORKDIR /tmp
 SHELL ["/bin/bash", "-c"]
+ENV PATH=$PATH:/usr/local/sbin:/usr/sbin:/sbin
 RUN apt-get update && yes | apt-get install -y \
   apt-utils \ 
   build-essential \
@@ -86,24 +125,6 @@ RUN rm -f /tmp/nginx/openresty/*/*.tar.gz && \
   make install && \
   make clean
 RUN ln -sf /usr/lib/nginx/modules /etc/nginx/modules
-#setting up PATH and other env vars
-RUN export DEBIAN_FRONTEND=noninteractive; \
-    rm -rf "/home/gitpod/.poetry" && \
-    rm -rf "/home/gitpod/.local" && \
-    mkdir -p "/home/gitpod/.local/bin" && \
-    echo 'export PATH="$PATH:/home/gitpod/.poetry/bin"' >> "/home/gitpod/.bashrc" && \
-    echo 'alias poetry="python3 /home/gitpod/.poetry/bin/poetry"' >> "/home/gitpod/.bash_aliases" 
-
-ENV PATH="$PATH:/home/gitpod/.local/bin:/home/gitpod/.poetry/bin"
-# installing poetry. poetry is a python dependancy management software
-RUN export DEBIAN_FRONTEND=noninteractive; \
-    curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python && \
-    python3 "/home/gitpod/.poetry/bin/poetry" --version
-# installing updating pip and installing pip packages 
-RUN export DEBIAN_FRONTEND=noninteractive; \
-    pip3 install dephell[full] && \
-    dephell --version
-
 #clean up
 RUN export DEBIAN_FRONTEND=noninteractive; \
   apt-get autoclean -y && \ 

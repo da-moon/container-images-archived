@@ -1,7 +1,6 @@
 FROM gitpod/workspace-full
-
 USER gitpod
-
+SHELL ["/bin/bash", "-c"]
 ENV LUA_VERSION=5.3.5
 ENV LUA_ROCKS_VERSION=3.3.1
 ENV LUA_JIT_VERSION=2.0.5

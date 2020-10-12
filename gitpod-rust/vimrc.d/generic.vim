@@ -5,10 +5,6 @@ function! PlugLoaded(name)
         \ stridx(&rtp, g:plugs[a:name].dir) >= 0)
 endfunction
 
-" saves the buffer whenever text is changed
-" https://stackoverflow.com/questions/6991638/how-to-auto-save-a-file-every-1-second-in-vim/27387138#27387138
- autocmd TextChanged,TextChangedI <buffer> silent write
-
 " async tasks
 let g:asyncrun_open = 6
 

@@ -1,5 +1,7 @@
 FROM gitpod/workspace-full
 USER gitpod
+SHELL ["/bin/bash", "-c"]
+ENV PIP_USER=false
 # uninstalling cargo since it takes too much space
 RUN yes | /home/gitpod/.cargo/bin/rustup self uninstall && \
     sudo rm /home/gitpod/.bashrc.d/80-rust
