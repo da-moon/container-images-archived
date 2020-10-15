@@ -147,23 +147,15 @@ xmap <silent> <C-d> y/\V<C-r>=escape(@",'/\')<CR><CR>gN<Plug>(coc-cursors-range)
 nmap <leader>x  <Plug>(coc-cursors-operator)
 if !empty(glob($navigation))
   source $navigation
-  echo '[~/.vimrc.d/coc.vim] => '. $navigation." was sourced"
-  echo ""
 endif
 if !empty(glob($bookmark))
   source $bookmark
-  echo '[~/.vimrc.d/coc.vim] => '. $bookmark." was sourced"
-  echo ""
 endif
 if !empty(glob($list))
   source $list
-  echo '[~/.vimrc.d/coc.vim] => '. $list." was sourced"
-  echo ""
 endif
 if !empty(glob($snippets))
   source $snippets 
-  echo '[~/.vimrc.d/coc.vim] => '. $snippets." was sourced"
-  echo ""
 endif
 "if !empty(glob($explorer))
 "  source $explorer 

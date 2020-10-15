@@ -57,7 +57,7 @@ WORKDIR $HOME
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" > /etc/apk/repositories && \
     echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories && \
     echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories && \
-    apk add --no-cache curl wget git build-base make ncurses ncurses-dev bash sudo jq bzip2 openssl-dev musl-dev libffi-dev upx python3-dev dropbear yarn nodejs htop && \
+    apk add --no-cache --upgrade curl wget git build-base make ncurses ncurses-dev bash sudo jq bzip2 openssl-dev musl-dev libffi-dev upx python3-dev dropbear yarn nodejs htop coreutils findutils grep && \
     # Install Chisel
     curl https://i.jpillora.com/chisel! | bash
 
@@ -98,26 +98,23 @@ RUN sudo echo "Running 'sudo' for Gitpod: success" && \
     rustup completions bash cargo | sudo tee /etc/bash_completion.d/rustup.cargo-bash-completion > /dev/null && \
     rustup toolchain uninstall stable && \
     rustup component add rls rust-analysis rust-src
-RUN (echo | vim -c "CocInstall -sync coc-tsserver \
-            coc-git \
-            coc-bookmark \
-            coc-snippets \
-            coc-highlight \
-            coc-json \
-            coc-lists \
-            coc-markdownlint \
-            coc-tabnine \
-            coc-tasks \
-            coc-todolist \
-            coc-template \
-            coc-yank \
-            coc-pairs \
-            coc-svg \
-            coc-yaml \
-            coc-spell-checker \
-            coc-rls \
-            coc-sh \
-            coc-prettier|q" > /dev/null && \
-            echo 0 ) || true
-RUN timeout 5m vim || true
 
+RUN (echo | vim -c "CocInstall -sync coc-tsserver|q" > /dev/null && echo 0 ) || true && \
+    (echo | vim -c "CocInstall -sync coc-git|q"  && echo 0 ) || true && \
+    (echo | vim -c "CocInstall -sync coc-bookmark|q" > /dev/null && echo 0 ) || true && \
+    (echo | vim -c "CocInstall -sync coc-snippets|q" > /dev/null && echo 0 ) || true && \
+    (echo | vim -c "CocInstall -sync coc-json|q" > /dev/null && echo 0 ) || true && \
+    (echo | vim -c "CocInstall -sync coc-lists|q" > /dev/null && echo 0 ) || true && \
+    (echo | vim -c "CocInstall -sync coc-markdownlint|q" > /dev/null && echo 0 ) || true && \
+    (echo | vim -c "CocInstall -sync coc-tabnine|q" > /dev/null && echo 0 ) || true && \
+    (echo | vim -c "CocInstall -sync coc-tasks|q" > /dev/null && echo 0 ) || true && \
+    (echo | vim -c "CocInstall -sync coc-todolist|q" > /dev/null && echo 0 ) || true && \
+    (echo | vim -c "CocInstall -sync coc-template|q" > /dev/null && echo 0 ) || true && \
+    (echo | vim -c "CocInstall -sync coc-yank|q" > /dev/null && echo 0 ) || true && \
+    (echo | vim -c "CocInstall -sync coc-pairs|q" > /dev/null && echo 0 ) || true && \
+    (echo | vim -c "CocInstall -sync coc-svg|q" > /dev/null && echo 0 ) || true && \
+    (echo | vim -c "CocInstall -sync coc-yaml|q" > /dev/null && echo 0 ) || true && \
+    (echo | vim -c "CocInstall -sync coc-spell-checker|q" > /dev/null && echo 0 ) || true && \
+    (echo | vim -c "CocInstall -sync coc-rls|q" > /dev/null && echo 0 ) || true && \
+    (echo | vim -c "CocInstall -sync coc-sh|q" > /dev/null && echo 0 ) || true && \
+    (echo | vim -c "CocInstall -sync coc-prettier|q" > /dev/null && echo 0 ) || true

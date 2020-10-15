@@ -79,7 +79,7 @@ WORKDIR $HOME
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" > /etc/apk/repositories && \
     echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories && \
     echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories && \
-    apk add --no-cache ca-certificates curl wget git build-base make ncurses ncurses-dev bash sudo jq bzip2 openssl-dev musl-dev libffi-dev upx python3-dev dropbear yarn nodejs htop py3-pip coreutils findutils && \
+    apk add --no-cache --upgrade ca-certificates curl wget git build-base make ncurses ncurses-dev bash sudo jq bzip2 openssl-dev musl-dev libffi-dev upx python3-dev dropbear yarn nodejs htop py3-pip coreutils findutils grep && \
     # Install Chisel
     curl https://i.jpillora.com/chisel! | bash
 
@@ -114,7 +114,6 @@ RUN vim --version && \
     tmate -V && \
     # chisel returns exit code 1
     chisel --version || true
-# use sudo so that user does not get sudo usage info on (the first) login
 RUN (echo | vim -c "CocInstall -sync coc-tsserver|q" > /dev/null && echo 0 ) || true && \
     (echo | vim -c "CocInstall -sync coc-git|q"  && echo 0 ) || true && \
     (echo | vim -c "CocInstall -sync coc-bookmark|q" > /dev/null && echo 0 ) || true && \
