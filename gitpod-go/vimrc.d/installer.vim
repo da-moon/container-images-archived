@@ -47,7 +47,6 @@ Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 " add surrounding characters in pairs
 Plug 'tpope/vim-surround'
 " help with snippets
-Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 " multicursor with ctrl support
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
